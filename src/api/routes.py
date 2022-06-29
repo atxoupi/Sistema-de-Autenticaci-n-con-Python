@@ -40,7 +40,6 @@ def singup():
 @api.route("/login", methods=["POST"])
 def login():
     data= request.get_json()
-    print (data)
     #validate
     if not data["email"]:
         return jsonify({"error": "Invalid"}), 400
@@ -50,7 +49,7 @@ def login():
     #create Token
     acces_token = create_access_token(identity=user.email)
     
-    return jsonify({"acces_token": acces_token}), 200
+    return jsonify({"access_token": acces_token}), 200
 
 @api.route("/user", methods=["GET"])
 @jwt_required()
