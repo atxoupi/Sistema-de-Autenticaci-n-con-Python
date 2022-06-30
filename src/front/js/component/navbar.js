@@ -12,12 +12,13 @@ export const Navbar = () => {
         </Link>
         <div className="ml-auto">
           {store.auth === true ? (
-            <button
+            <Link
+              to="/"
               className="btn btn-primary"
               onClick={() => actions.logout()}
             >
               Logout
-            </button>
+            </Link>
           ) : (
             <Link to="/" className="btn btn-primary">
               Login
