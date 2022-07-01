@@ -46,7 +46,6 @@ const getState = ({
                         return response.json();
                     })
                     .then((data) => {
-                        console.log(data);
                         localStorage.setItem("token", data.access_token);
                     });
             },
@@ -54,6 +53,22 @@ const getState = ({
                 localStorage.removeItem("token");
                 setStore({
                     auth: false,
+                });
+            },
+            signup: (email, password) => {
+                fetch(
+                    "https://3001-4geeksacade-reactflaskh-1qgtyf2qbj2.ws-eu51.gitpod.io/api/signup", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            email: email,
+                            password: password,
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                ).then((response) => {
+                    return response.json();
                 });
             },
             getMessage: async () => {

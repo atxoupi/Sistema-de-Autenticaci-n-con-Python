@@ -1,24 +1,21 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
-import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-export const Login = () => {
+export const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { store, actions } = useContext(Context);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    actions.login(email, password);
+    actions.signup(email, password);
   };
 
   return (
     <>
-      {store.auth === true ? (
-        <Navigate to="/demo" />
-      ) : (
+      <div className="d-flex justify-content-center">
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="exampleInputEmail1" className="form-label">
@@ -48,14 +45,14 @@ export const Login = () => {
           </div>
           <div className="d-flex justify-content-between">
             <button type="submit" className="btn btn-primary">
-              Submit
+              SignUp Please!!!
             </button>
-            <Link to="/signup" className="btn btn-primary">
-              SignUp
+            <Link to="/" className="btn btn-primary">
+              Cancel
             </Link>
           </div>
         </form>
-      )}
+      </div>
     </>
   );
 };
