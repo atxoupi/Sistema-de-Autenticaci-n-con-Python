@@ -26,7 +26,7 @@ const getState = ({
             },
             login: (email, password) => {
                 fetch(
-                        "https://3001-4geeksacade-reactflaskh-1qgtyf2qbj2.ws-eu51.gitpod.io/api/login", {
+                        "https://3001-4geeksacade-reactflaskh-1qgtyf2qbj2.ws-eu47.gitpod.io/api/login", {
                             method: "POST",
                             body: JSON.stringify({
                                 email: email,

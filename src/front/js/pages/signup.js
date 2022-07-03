@@ -6,11 +6,14 @@ import { Link } from "react-router-dom";
 export const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [password1, setPassword1] = useState("");
   const { store, actions } = useContext(Context);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    actions.signup(email, password);
+    if (password === password1) {
+      e.preventDefault();
+      actions.signup(email, password);
+    } else alert("Passwords do not match");
   };
 
   return (
@@ -41,6 +44,15 @@ export const Signup = () => {
               className="form-control"
               id="exampleInputPassword1"
               onChange={(e) => setPassword(e.target.value)}
+            />
+            <label htmlFor="exampleInputPassword2" className="form-label">
+              Retype-Password
+            </label>
+            <input
+              type="password"
+              className="form-control"
+              id="exampleInputPassword2"
+              onChange={(e) => setPassword1(e.target.value)}
             />
           </div>
           <div className="d-flex justify-content-between">
