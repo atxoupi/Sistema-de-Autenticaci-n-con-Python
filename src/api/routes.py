@@ -6,10 +6,12 @@ from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 import json
+from flask_bcrypt import Bcrypt
 
 
 api = Blueprint('api', __name__)
-
+app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
@@ -24,7 +26,8 @@ def handle_hello():
 def singup():
 
     body=json.loads(request.data)
-    users=User(email=body["email"], password=body["password"],is_active=True)
+    pw_hash = bcrypt.generate_password_hash(body["password"]).decode('utf-8')
+    users=User(email=body["email"], password=pw_hash,is_active=True)
     db.session.add(users)
     db.session.commit()
 
@@ -47,6 +50,9 @@ def login():
         return jsonify({"error": "Invalid"}), 400
     user = User.query.filter_by(email=data["email"]).first()
     #create Token
+    if bcrypt.check_password_hash(user.password, data["password"])!=true:
+    #if data["password"]!= user.password:
+        return jsonify({"error": "Invalid"}), 400
     acces_token = create_access_token(identity=user.email)
     
     return jsonify({"access_token": acces_token}), 200
