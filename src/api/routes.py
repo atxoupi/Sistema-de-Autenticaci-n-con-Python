@@ -27,6 +27,7 @@ def singup():
 
     body=json.loads(request.data)
     pw_hash = bcrypt.generate_password_hash(body["password"]).decode('utf-8')
+    print(pw_hash)
     users=User(email=body["email"], password=pw_hash,is_active=True)
     db.session.add(users)
     db.session.commit()
@@ -49,8 +50,9 @@ def login():
     if not data["password"]:
         return jsonify({"error": "Invalid"}), 400
     user = User.query.filter_by(email=data["email"]).first()
-    #create Token
-    if bcrypt.check_password_hash(user.password, data["password"])!=true:
+    comprobacion=bcrypt.check_password_hash(user.password, data["password"])
+    print(comprobacion)
+    if comprobacion!=true:
     #if data["password"]!= user.password:
         return jsonify({"error": "Invalid"}), 400
     acces_token = create_access_token(identity=user.email)
