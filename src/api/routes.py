@@ -26,8 +26,7 @@ def handle_hello():
 def singup():
 
     body=json.loads(request.data)
-    pw_hash = bcrypt.generate_password_hash(body["password"]).decode('utf-8')
-    print(pw_hash)
+    pw_hash = bcrypt.generate_password_hash(body["password"])
     users=User(email=body["email"], password=pw_hash,is_active=True)
     db.session.add(users)
     db.session.commit()
