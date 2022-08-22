@@ -1,7 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, current_app
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
@@ -10,8 +10,6 @@ from flask_bcrypt import Bcrypt
 
 
 api = Blueprint('api', __name__)
-app = Flask(__name__)
-bcrypt = Bcrypt(app)
 
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
@@ -25,9 +23,10 @@ def handle_hello():
 @api.route('/signup', methods=['POST'])
 def singup():
 
-    body=json.loads(request.data)
-    pw_hash = bcrypt.generate_password_hash(body["password"])
-    users=User(email=body["email"], password=pw_hash,is_active=True)
+    password = request.json.get("password", None)
+    email = request.json.get("email", None)
+    pw_hash = current_app.bcrypt.generate_password_hash(password).decode("utf-8")
+    users=User(email=email, password=pw_hash,is_active=True)
     db.session.add(users)
     db.session.commit()
 
@@ -42,6 +41,7 @@ def singup():
 # create_access_token() function is used to actually generate the JWT.
 @api.route("/login", methods=["POST"])
 def login():
+    print("Estamos en el back")
     data= request.get_json()
     #validate
     if not data["email"]:
